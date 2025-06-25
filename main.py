@@ -1,14 +1,13 @@
-from fastapi import FastAPI, Request
-from src.agents.mcp_handler import MCPHandler
+from fastapi import FastAPI
+from pydantic import BaseModel
+from src.agents.mcp_runtime import mcp
 
 app = FastAPI()
-mcp_handler = MCPHandler()
+
+class Query(BaseModel):
+    message: str
 
 @app.post("/mcp")
-async def mcp_entry(request: Request):
-    """
-    FastAPI endpoint that receives a user message and routes it through the MCP pipeline.
-    """
-    data = await request.json()
-    user_message = data.get("message")
-    return await mcp_handler.run(user_message)
+async def run_mcp(query: Query):
+    response = await mcp.run(query.message)
+    return {"response": response}

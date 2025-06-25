@@ -1,5 +1,6 @@
 fastapi
 uvicorn
 anthropic
+fastmcp[cli]
 httpx
 python-dotenv
