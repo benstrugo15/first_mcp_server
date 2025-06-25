@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MCP Claude Server</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+    code, pre {
+      background-color: #f4f4f4;
+      padding: 0.5rem;
+      border-radius: 5px;
+      font-family: Consolas, monospace;
+    }
+    pre {
+      overflow-x: auto;
+    }
+    .section {
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>MCP Claude Server</h1>
+  <p>A production-level implementation of an MCP-based AI server using Claude (Anthropic API) and 7 tools. The model chooses which tools to invoke and returns a final summary via email.</p>
+
+  <div class="section">
+    <h2>🚀 Features</h2>
+    <ul>
+      <li>Fully async FastAPI backend</li>
+      <li>Claude MCP integration with tool-use loop</li>
+      <li>7 tools: weather, news, exchange rate, joke, stock, quote, send_email</li>
+      <li>Dockerized and clean architecture</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>🧠 Toolset</h2>
+    <ol>
+      <li><strong>get_weather</strong>: City-based weather summary</li>
+      <li><strong>get_news</strong>: Latest headlines per country</li>
+      <li><strong>get_exchange_rate</strong>: Currency conversion</li>
+      <li><strong>get_joke</strong>: Random joke</li>
+      <li><strong>get_stock_price</strong>: Current stock price</li>
+      <li><strong>get_quote</strong>: Inspirational quote</li>
+      <li><strong>send_email</strong>: Deliver message summary via email</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2>⚙️ Setup</h2>
+    <pre><code>git clone &lt;your-repo&gt;
+cd mcp_server
+cp .env.example .env
+docker build -t mcp-server .
+docker run -p 8080:8080 --env-file .env mcp-server
+</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>📩 API</h2>
+    <p><strong>POST /mcp</strong></p>
+    <pre><code>{
+  "message": "תביא לי את התחזית בתל אביב ותשלח לי למייל ben@example.com"
+}</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>✅ Requirements</h2>
+    <pre><code>fastapi
+uvicorn
+anthropic
+httpx
+python-dotenv</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>📁 Structure</h2>
+    <pre><code>.
+├── main.py
+├── Dockerfile
+├── .env.example
+├── requirements.txt
+├── src/
+│   └── agents/
+│       ├── mcp_handler.py
+│       ├── tools.py
+│       └── tool_logic.py
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h2>🧑‍💻 Author</h2>
+    <p>Crafted by a backend professional in collaboration with Claude. ❤️</p>
+  </div>
+</body>
+</html>
