@@ -1,6 +1,3 @@
-fastapi
-uvicorn
-anthropic
-fastmcp[cli]
+fastmcp
 httpx
 python-dotenv
