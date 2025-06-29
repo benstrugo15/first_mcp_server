@@ -1,19 +1,18 @@
 from fastapi_mcp import FastApiMCP
+from fastapi import FastAPI
 import httpx
-from src.settings import CONF
+from app.settings import CONF
 
 app = FastAPI()
 
-mcp = FastApiMCP(app)
 
-@mcp.tool()
+@app.post("/weather", operation_id="get_weather_for_city")
 async def get_weather(city: str) -> str:
     print("Getting weather")
     async with httpx.AsyncClient() as client:
         r = await client.get("https://wttr.in/" + city + "?format=3")
         return r.text.strip()
-
-@mcp.tool()
+@app.post("/news", operation_id="get_news")
 async def get_news(country: str) -> str:
     print("Getting news")
     async with httpx.AsyncClient() as client:
@@ -24,7 +23,7 @@ async def get_news(country: str) -> str:
         articles = r.json().get("articles", [])[:3]
         return "\n".join([f"- {a['title']}" for a in articles]) or "No news found."
 
-@mcp.tool()
+@app.post("/exchange_rate", operation_id="get_exchange_rate")
 async def get_exchange_rate(from_currency: str, to_currency: str) -> str:
     print("Getting exchange rate")
     async with httpx.AsyncClient() as client:
@@ -36,7 +35,7 @@ async def get_exchange_rate(from_currency: str, to_currency: str) -> str:
         rate = data.get("result")
         return f"1 {from_currency} = {rate} {to_currency}" if rate else "Rate not found."
 
-@mcp.tool()
+@app.post("/joke", operation_id="get_joke")
 async def get_joke() -> str:
     print("Getting joke")
     async with httpx.AsyncClient() as client:
@@ -44,7 +43,7 @@ async def get_joke() -> str:
         data = r.json()
         return f"{data['setup']} - {data['punchline']}"
 
-@mcp.tool()
+@app.post("/stock_price", operation_id="get_stock_price")
 async def get_stock_price(symbol: str) -> str:
     print("getting stock price")
     async with httpx.AsyncClient() as client:
@@ -55,7 +54,7 @@ async def get_stock_price(symbol: str) -> str:
         data = r.json()
         return f"{symbol.upper()} current price: ${data.get('c', 'N/A')}"
 
-@mcp.tool()
+@app.post("/quote", operation_id="get_quote")
 async def get_quote() -> str:
     print("Getting quote")
     async with httpx.AsyncClient() as client:
@@ -63,16 +62,17 @@ async def get_quote() -> str:
         data = r.json()
         return f"{data['content']} — {data['author']}"
 
-
-@mcp.tool()
+@app.post("/my_info", operation_id="get_my_info")
 async def get_my_info() -> str:
     print("Getting info")
     return "my personal info: my name is ben im 24 years old and im from tel aviv"
 
-@mcp.tool()
+@app.post("/email", operation_id="send_email")
 async def send_email(to: str, subject: str, body: str) -> str:
     # Placeholder: integrate with a real email service (e.g., SendGrid/Mailgun)
     print(f"Sending email to {to} with subject '{subject}' and body: {body}")
     return f"Email sent to {to}."
+
+mcp = FastApiMCP(app, include_operations=["get_weather_for_city", "get_news", "get_exchange_rate", "get_joke", "get_stock_price", "get_my_info", "send_email"])
 
 mcp.mount()
