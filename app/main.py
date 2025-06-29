@@ -1,8 +1,10 @@
-from fastmcp import FastMCP
+from fastapi_mcp import FastApiMCP
 import httpx
 from src.settings import CONF
 
-mcp = FastMCP()
+app = FastAPI()
+
+mcp = FastApiMCP(app)
 
 @mcp.tool()
 async def get_weather(city: str) -> str:
@@ -73,5 +75,4 @@ async def send_email(to: str, subject: str, body: str) -> str:
     print(f"Sending email to {to} with subject '{subject}' and body: {body}")
     return f"Email sent to {to}."
 
-if __name__ == "__main__":
-    mcp.run()
+mcp.mount()

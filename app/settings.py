@@ -15,9 +15,9 @@ class Settings(BaseModel):
 @lru_cache()
 def _load_settings() -> Settings:
     return Settings(
-        anthropic_api_key=os.getenv("ANTHROPIC_API_KEY"),
-        news_api_key=os.getenv("NEWS_API_KEY"),
-        finnhub_api_key=os.getenv("FINNHUB_API_KEY")
+        anthropic_api_key=os.getenv("ANTHROPIC_API_KEY", ""),
+        news_api_key=os.getenv("NEWS_API_KEY", ""),
+        finnhub_api_key=os.getenv("FINNHUB_API_KEY", "")
     )
 
 
